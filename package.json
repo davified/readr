@@ -1,0 +1,15 @@
+{
+  "name": "readr",
+  "version": "1.0.0",
+  "description": "Readr is an app that aggregates, curates and serves awesome articles. Say goodbye to information overload",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "readr"
+  },
+  "author": "team-stephanie",
+  "license": "ISC"
+}
