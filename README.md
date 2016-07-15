@@ -19,7 +19,8 @@ Potential npm packages include:
 * translate-google-free
 * pdfkit
 
-## [Readr | Aggregate, currate, serve](flight846.github.io/readr-client)
+## Companion API client
+[Readr | Aggregate, currate, serve](flight846.github.io/readr-client)
 
 ## Team
 * Yazid Ismail (@flight846)
