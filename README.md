@@ -20,7 +20,7 @@ Potential npm packages include:
 * pdfkit
 
 ## Companion API client
-[Readr | Aggregate, currate, serve](flight846.github.io/readr-client)
+[Readr | Aggregate, currate, serve](https://flight846.github.io/readr-client/)
 
 ## Team
 * Yazid Ismail (@flight846)
