@@ -1,12 +1,10 @@
 const mongoose = require('mongoose')
-const User = require('./user')
-const Topic = require('./topic')
+// const Topic = require('./topic')
 
 const TldrSchema = new mongoose.Schema({
   summary: String,
   likes: Number
 })
-
 
 const ArticleSchema = new mongoose.Schema({
   url: String,
@@ -26,7 +24,5 @@ ArticleSchema.pre('save', function (next) {
 })
 
 const Article = mongoose.model('Article', ArticleSchema)
-// const Tldr = mongoose.model('Tldr', TldrSchema)
-// const Topic = mongoose.model('Topic', TopicSchema)
 
 module.exports = Article

@@ -1,7 +1,4 @@
 const mongoose = require('mongoose')
-const Article = require('./article')
-const User = require('./user')
-
 
 const TopicSchema = new mongoose.Schema({
   topic: String

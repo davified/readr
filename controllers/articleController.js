@@ -37,8 +37,8 @@ function generateTldr (req, res, next) {
   })
 }
 
-
 module.exports = {
   getAllArticles: getAllArticles,
   createArticle: createArticle,
+  generateTldr: generateTldr
 }
