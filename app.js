@@ -20,7 +20,7 @@ app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, User-Email, Auth-Token')
   next()
 })
-mongoose.connect('mongodb://default:defaultpassword@ds011890.mlab.com:11890/readr')
+mongoose.connect(process.env.MONGODB_URI)
 
 // SETTING UP THE ROOT TO SHOW ALL ARTICLES
 app.get('/', articleController.getAllArticles)

@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 const User = require('./user')
 
 const TldrSchema = new mongoose.Schema({
-  summary: String
+  summary: String,
+  like: Number
 })
 
 const TopicSchema = new mongoose.Schema({
@@ -12,9 +13,9 @@ const TopicSchema = new mongoose.Schema({
 const ArticleSchema = new mongoose.Schema({
   url: String,
   title: String,
-  html: [],
+  html: String,
   tldr: [TldrSchema],
-  topics: [TopicSchema],
+  topics: [TopicSchema], // Reference Instead
   score: Number,
   readBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
@@ -32,4 +33,7 @@ const Article = mongoose.model('Article', ArticleSchema)
 // const Tldr = mongoose.model('Tldr', TldrSchema)
 // const Topic = mongoose.model('Topic', TopicSchema)
 
-module.exports = Article
+module.exports = {
+  Article: Article,
+  Tldr: Tldr
+}
