@@ -24,5 +24,9 @@ ArticleSchema.pre('save', function (next) {
 })
 
 const Article = mongoose.model('Article', ArticleSchema)
+const Tldr = mongoose.model('Tldr', TldrSchema)
 
-module.exports = Article
+module.exports = {
+  Article: Article,
+  Tldr: Tldr
+}

@@ -3,6 +3,7 @@ const router = express.Router()
 const userController = require('../controllers/userController')
 const articleController = require('../controllers/articleController')
 const signInUpController = require('../controllers/signInUpController')
+const tldrController = require('../controllers/tldrController')
 const topicController = require('../controllers/topicController')
 
 // 'HELLO WORLD' TEST FOR DEPLOYMENT ON HEROKU
@@ -49,5 +50,7 @@ router.patch('/topics/:id', topicController.updateTopic)
 
 // Delete topic
 router.delete('/topics/:id', topicController.removeTopic)
+
+router.post('/tldr', tldrController.createTLDR)
 
 module.exports = router
