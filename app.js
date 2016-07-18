@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const User = require('./models/user')
+const Article = require('./models/article')
 const userController = require('./controllers/userController')
 const articleController = require('./controllers/articleController')
 const signInUpController = require('./controllers/signInUpController')
@@ -19,17 +20,27 @@ app.use(function (req, res, next) {
 })
 mongoose.connect('mongodb://default:defaultpassword@ds011890.mlab.com:11890/readr')
 
-// 'HELLO WORLD' TEST FOR DEPLOYMENT ON HEROKU
-app.get('/', function (req, res) {
-  res.status(200).json({message: 'hello world!'})
-})
+// SETTING UP THE ROOT TO SHOW ALL ARTICLES
+app.get('/', articleController.getAllArticles)
 
 // ROUTING END POINTS TO THE APPROPRIATE FUNCTIONS
 app.post('/signup', signInUpController.signUp)
 app.post('/signin', signInUpController.signIn)
 
-// GET ALL POSTS
-app.get('/articles', articleController.getAllArticles)
+// FIND USER BY ID
+app.get('/users/:user_id', userController.findUserById)
+
+// AFTER USER HAS LOGGED IN (Note: we need to include the middleware to check that user is logged in.)
+// GET ALL POSTS SPECIFIC TO THE USER
+app.get('/articles', userController.userLoggedIn, articleController.getAllArticles)
+
+// CREATING ARTICLES
+app.post('/articles', userController.userLoggedIn, articleController.createArticle)
+
+// EDITING AND DELETING ARTICLES
+// app.route('/articles/:id')
+//   .put(userController.userLoggedIn, articleController.editArticle)
+//   .delete(userController.userLoggedIn, articleController.deleteArticle)
 
 // GET ALL USERS
 app.get('/users', userController.getAllUsers)
