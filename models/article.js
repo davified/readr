@@ -1,26 +1,22 @@
 const mongoose = require('mongoose')
 const User = require('./user')
+const Topic = require('./topic')
 
 const TldrSchema = new mongoose.Schema({
   summary: String,
-  like: Number
+  likes: Number
 })
 
-const TopicSchema = new mongoose.Schema({
-  topic: String
-})
 
 const ArticleSchema = new mongoose.Schema({
   url: String,
   title: String,
   html: String,
   tldr: [TldrSchema],
-  topics: [TopicSchema], // Reference Instead
+  topics: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }],
   score: Number,
-  readBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  sharedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  createdBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+  liked: Number,
+  shared: Number
 })
 
 // GENERATE TLDR SUMMARY BEFORE SAVE

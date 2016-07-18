@@ -11,7 +11,8 @@ const UserSchema = new mongoose.Schema({
   articlesRead: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
   articlesLiked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
   articlesShared: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
-  articlesCreated: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }]
+  articlesCreated: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
+  articlesTagged: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }]
 })
 
 UserSchema.pre('save', function (next) {
