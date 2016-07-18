@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-// const Topic = require('./topic')
+const Topic = require('./topic')
 
 const TldrSchema = new mongoose.Schema({
   summary: String,
