@@ -3,6 +3,7 @@ const router = express.Router()
 const userController = require('../controllers/userController')
 const articleController = require('../controllers/articleController')
 const signInUpController = require('../controllers/signInUpController')
+const topicController = require('../controllers/topicController')
 
 // 'HELLO WORLD' TEST FOR DEPLOYMENT ON HEROKU
 router.get('/', function (req, res) {
@@ -13,10 +14,40 @@ router.get('/', function (req, res) {
 router.post('/signup', signInUpController.signUp)
 router.post('/signin', signInUpController.signIn)
 
-// GET ALL POSTS
+// USERS
+// Get all users
+router.get('/users', userController.getAllUsers)
+
+// ARTICLES
+// Get all articles
 router.get('/articles', articleController.getAllArticles)
 
-// GET ALL USERS
-router.get('/users', userController.getAllUsers)
+// Create new article
+router.post('/articles', articleController.createArticle)
+
+// Get individual article
+router.get('/articles/:id', articleController.getArticle)
+
+// Update article
+router.patch('/articles/:id', articleController.updateArticle)
+
+// Delete article
+router.delete('/articles/:id', articleController.removeArticle)
+
+// TOPICS
+// Get all topics
+router.get('/topics', topicController.getAllTopics)
+
+// Create new topic
+router.post('/topics', topicController.createTopic)
+
+// Get individual topic
+router.get('/topics/:id', topicController.getTopic)
+
+// Update topic
+router.patch('/topics/:id', topicController.updateTopic)
+
+// Delete topic
+router.delete('/topics/:id', topicController.removeTopic)
 
 module.exports = router
