@@ -1,4 +1,4 @@
-const Article = require('../models/article')
+const Article = require('../models/article').Article
 var Diffbot = require('diffbot').Diffbot
 var diffbot = new Diffbot('0b940b7bfec2c5da6ae73fc1225913dc') // Diffbot Token Here
 
