@@ -10,7 +10,6 @@ function signUp (req, res) {
 
 function signIn (req, res) {
   const userParams = req.body
-
   User.findOne({email: userParams.email}, (err, user) => {
     if (err || !user) return res.status(401).json({error: '/signin error 1'})
     user.authenticate(userParams.password, (err, isMatch) => {
@@ -20,7 +19,20 @@ function signIn (req, res) {
   })
 }
 
+function userLoggedIn (req, res, next) {
+  const userEmail = req.get('User-Email')
+  const authToken = req.get('Auth-Token')
+  if (!userEmail || !authToken) return res.status(401).json({error: 'unauthorised'})
+
+  User.findOne({email: userEmail, auth_token: authToken}, (err, user) => {
+    if (err || !user) return res.status(401).json({error: 'unauthorised'})
+    req.currentUser = user
+    next()
+  })
+}
+
 module.exports = {
   signUp: signUp,
-  signIn: signIn
+  signIn: signIn,
+  userLoggedIn: userLoggedIn
 }

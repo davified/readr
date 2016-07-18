@@ -37,19 +37,19 @@ router.delete('/articles/:id', articleController.removeArticle)
 router.get('/topics', topicController.getAllTopics)
 
 // Create new topic
-router.post('/topics', topicController.createTopic)
+router.post('/topics', userController.userLoggedIn, topicController.createTopic)
 
 // Get individual topic
 router.get('/topics/:id', topicController.getTopic)
 
 // Update topic
-router.patch('/topics/:id', topicController.updateTopic)
+router.patch('/topics/:id', userController.userLoggedIn, topicController.updateTopic)
 
 // Delete topic
-router.delete('/topics/:id', topicController.removeTopic)
+router.delete('/topics/:id', userController.userLoggedIn, topicController.removeTopic)
 
-router.post('/tldr', tldrController.createTldr)
+router.post('/tldr', userController.userLoggedIn, tldrController.createTldr)
 
-router.post('/articles/:id/tldr', tldrController.generateTldr)
+router.post('/articles/:id/tldr', userController.userLoggedIn, tldrController.generateTldr)
 
 module.exports = router
