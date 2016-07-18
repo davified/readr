@@ -1,6 +1,7 @@
 // SETTING UP THE DEPENDENCIES FOR APP.JS
 const express = require('express')
 const mongoose = require('mongoose')
+const logger = require('morgan')
 const bodyParser = require('body-parser')
 const User = require('./models/user')
 const Article = require('./models/article')
@@ -11,6 +12,7 @@ const port = process.env.PORT || 3000
 
 // CREATING THE APP
 const app = express()
+app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(function (req, res, next) {

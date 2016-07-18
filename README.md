@@ -4,6 +4,7 @@ This repo contains server-side code for Readr, which is an app that aggregates, 
 
 ## Team notes
 1) run ```npm install``` before starting node app.js
+
 2) mlab:
 * database name: readr
 * username: default
@@ -12,11 +13,14 @@ This repo contains server-side code for Readr, which is an app that aggregates, 
 ## Stack
 This server-side app is built on Node, Express and MongoDB.
 
-## dependencies
+## Dependencies
 Potential npm packages include:
 * node-tldr
 * translate-google-free
 * pdfkit
+
+## Companion API client
+[Readr | Aggregate, currate, serve](https://flight846.github.io/readr-client/)
 
 ## Team
 * Yazid Ismail (@flight846)
