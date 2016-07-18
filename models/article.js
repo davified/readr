@@ -33,7 +33,4 @@ const Article = mongoose.model('Article', ArticleSchema)
 // const Tldr = mongoose.model('Tldr', TldrSchema)
 // const Topic = mongoose.model('Topic', TopicSchema)
 
-module.exports = {
-  Article: Article,
-  Tldr: Tldr
-}
+module.exports = Article

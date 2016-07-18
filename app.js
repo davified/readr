@@ -9,6 +9,8 @@ const userController = require('./controllers/userController')
 const articleController = require('./controllers/articleController')
 const signInUpController = require('./controllers/signInUpController')
 const port = process.env.PORT || 3000
+const dotenv = require('dotenv')
+dotenv.load()
 
 // CREATING THE APP
 const app = express()
