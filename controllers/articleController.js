@@ -1,9 +1,6 @@
 const Article = require('../models/article')
-<<<<<<< HEAD
 var Diffbot = require('diffbot').Diffbot
 var diffbot = new Diffbot('0b940b7bfec2c5da6ae73fc1225913dc') // Diffbot Token Here
-=======
->>>>>>> generatetldr
 
 function getAllArticles (req, res) {
   Article.find({}, (err, articlesArray) => {
@@ -43,7 +40,6 @@ function getArticle (req, res) {
   })
 }
 
-<<<<<<< HEAD
 function removeArticle (req, res) {
   var id = req.params.id
 
@@ -59,9 +55,4 @@ module.exports = {
   createArticle: createArticle,
   getArticle: getArticle,
   removeArticle: removeArticle
-=======
-module.exports = {
-  getAllArticles: getAllArticles,
-  createArticle: createArticle
->>>>>>> generatetldr
 }
