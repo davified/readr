@@ -8,7 +8,10 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   auth_token: { type: String, unique: true },
-  articles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }]
+  articlesRead: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
+  articlesLiked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
+  articlesShared: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
+  articlesCreated: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }]
 })
 
 UserSchema.pre('save', function (next) {

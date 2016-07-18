@@ -4,6 +4,8 @@ const mongoose = require('mongoose')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
 const port = process.env.PORT || 3000
+const dotenv = require('dotenv')
+dotenv.load() 
 
 // CREATING THE APP
 const app = express()
@@ -15,7 +17,7 @@ app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, User-Email, Auth-Token')
   next()
 })
-mongoose.connect('mongodb://default:defaultpassword@ds011890.mlab.com:11890/readr')
+mongoose.connect(process.env.MONGODB_URI)
 
 // ROUTES
 const router = require('./config/routes')
