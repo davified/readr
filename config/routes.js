@@ -48,8 +48,20 @@ router.patch('/topics/:id', userController.userLoggedIn, topicController.updateT
 // Delete topic
 router.delete('/topics/:id', userController.userLoggedIn, topicController.removeTopic)
 
-router.post('/tldr', userController.userLoggedIn, tldrController.createTldr)
+//TLDRs
+// Create TLDR
+router.post('/articles/:id/tldr', userController.userLoggedIn, tldrController.createTldr)
+// Automatically generating TLDR. I've commented this out because the generateTldr() function is only used in the articleController when creating functions
+// router.post('/articles/:id/tldr', userController.userLoggedIn, tldrController.generateTldr)
 
-router.post('/articles/:id/tldr', userController.userLoggedIn, tldrController.generateTldr)
+// Get TLDRs (all, and by id)
+router.get('/articles/:id/tldr', tldrController.getAllTldr)
+router.get('/articles/:id/tldr/:tldr_id', tldrController.getTldrById)
+
+// Edit TLDR
+router.patch('/articles/:id/tldr/:tldr_id', userController.userLoggedIn, tldrController.updateTldr)
+
+// Delete TLDR
+router.delete('/articles/:id/tldr/:tldr_id', userController.userLoggedIn, tldrController.deleteTldr)
 
 module.exports = router
