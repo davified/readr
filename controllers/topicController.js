@@ -8,7 +8,7 @@ function getAllTopics (req, res) {
 }
 
 function createTopic (req, res) {
-  const topic= new Topic(req.body)
+  const topic = new Topic(req.body)
   topic.save((err, topic) => {
     if (err) return res.status(401).json({error: '/topic createTopic error 1'})
     res.status(200).json({message: 'topic created! yay! ', topic})
@@ -23,23 +23,24 @@ function getTopic (req, res) {
 }
 
 function updateTopic (req, res) {
-    Topic.findById({_id: req.params.id}, function (err, topic) {
-        topic.topic = req.body.topic
-        topic.save(function(err) {
-            if (err) return res.status(401).json({error: '/topic cant find topic to delete'})
-            res.status(200).json({message: 'topic updated! yay! ', topic})
-        })  
+  Topic.findById({_id: req.params.id}, function (err, topic) {
+    if (err) return res.status(401).json({error: '/topic cant find topic to update'})
+    topic.topic = req.body.topic
+    topic.save(function (err) {
+      if (err) return res.status(401).json({error: '/topic cant find topic to update'})
+      res.status(200).json({message: 'topic updated! yay! ', topic})
     })
+  })
 }
 
 function removeTopic (req, res) {
-    Topic.findById({_id: req.params.id}, function (err, topic) {
-        if (err) return res.status(401).json({error: '/topic cant find topic to delete'})
-        topic.remove(function(err) {
-            if (err) return res.status(401).json({ error: '/topic cant delete topic'})
-            res.status(200).json({message: 'topic deleted! Yay!'})
-        })
+  Topic.findById({_id: req.params.id}, function (err, topic) {
+    if (err) return res.status(401).json({error: '/topic cant find topic to delete'})
+    topic.remove(function (err) {
+      if (err) return res.status(401).json({error: '/topic cant delete topic'})
+      res.status(200).json({message: 'topic deleted! Yay!'})
     })
+  })
 }
 
 module.exports = {
