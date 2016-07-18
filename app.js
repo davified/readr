@@ -5,7 +5,7 @@ const logger = require('morgan')
 const bodyParser = require('body-parser')
 const port = process.env.PORT || 3000
 const dotenv = require('dotenv')
-dotenv.load() 
+dotenv.load()
 
 // CREATING THE APP
 const app = express()

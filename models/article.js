@@ -18,10 +18,11 @@ const ArticleSchema = new mongoose.Schema({
 })
 
 // GENERATE TLDR SUMMARY BEFORE SAVE
-ArticleSchema.pre('save', function (next) {
-  const article = this
-  // The node-tldr npm package should be called here, to automatically generate tldrs before user saves
-})
+// ArticleSchema.pre('save', function (next) {
+//   const article = this
+//   next()
+//   // The node-tldr npm package should be called here, to automatically generate tldrs before user saves
+// })
 
 const Article = mongoose.model('Article', ArticleSchema)
 const Tldr = mongoose.model('Tldr', TldrSchema)

@@ -29,9 +29,6 @@ router.post('/articles', articleController.createArticle)
 // Get individual article
 router.get('/articles/:id', articleController.getArticle)
 
-// Update article
-router.patch('/articles/:id', articleController.updateArticle)
-
 // Delete article
 router.delete('/articles/:id', articleController.removeArticle)
 
