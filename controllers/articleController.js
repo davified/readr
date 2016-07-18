@@ -25,9 +25,12 @@ function createArticle (req, res) {
     article.title = data.objects[0].title
     article.html = data.objects[0].html
     // article.topics = data.objects[0].tags
+    // data.objects[0].tags.forEach(function (tag) {
+    //   article.topics.push(tag)
+    // })
     if (data.media) console.log(JSON.stringify(data.media))
 
-    // add tldr from tldr controller
+    // add tldr
     summary.summarize(article.url, function (result, failure) {
       if (failure) console.log('An error occured!')
       article.tldr = new Tldr({summary: result.summary})
