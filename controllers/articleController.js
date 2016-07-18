@@ -1,4 +1,6 @@
 const Article = require('../models/article').Article
+const Tldr = require('../models/article').Tldr
+const summary = require('node-tldr')
 var Diffbot = require('diffbot').Diffbot
 var diffbot = new Diffbot('0b940b7bfec2c5da6ae73fc1225913dc') // Diffbot Token Here
 
@@ -12,6 +14,9 @@ function getAllArticles (req, res) {
 // need to figure out how to save embedded models (e.g. Tldr and Categories). Right now, it throws an error when tldr and categories are listed in articleman. But when I remove it, createArticle() works
 function createArticle (req, res) {
   let article = new Article()
+  article.score = 0
+  article.liked = 0
+  article.shared = 0
 
   diffbot.article({url: req.body.url}, (err, data) => {
     if (err) res.json({message: 'Diffbot Error:' + err})
@@ -22,9 +27,15 @@ function createArticle (req, res) {
     // article.topics = data.objects[0].tags
     if (data.media) console.log(JSON.stringify(data.media))
 
-    article.save((err, article) => {
-      if (err) return res.status(401).json({error: '/article createArticle error 1'})
-      res.status(200).json({message: 'article created! yay! ', article})
+    // add tldr from tldr controller
+    summary.summarize(article.url, function (result, failure) {
+      if (failure) console.log('An error occured!')
+      article.tldr = new Tldr({summary: result.summary})
+
+      article.save((err, article) => {
+        if (err) return res.status(401).json({error: '/article createArticle error 1'})
+        res.status(200).json({message: 'article created! yay! ', article})
+      })
     })
   })
 }
