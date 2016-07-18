@@ -27,7 +27,46 @@ function generateTldr (req, res) {
   })
 }
 
+function getAllTldr (req, res) {
+  Tldr.find({}, function (err, TldrArray) {
+    if (err) return res.status(401).json({error: '/getAllTldr error'})
+    res.status(200).json(TldrArray)
+  })
+}
+
+function getTldrById (req, res) {
+  Tldr.findById({_id: req.params.tldr_id}, function (err, tldr) {
+    if (err) return res.status(404).json({error: '/tldr getTldrById error 1'})
+    res.status(200).json(tldr)
+  })
+}
+
+function updateTldr (req, res) {
+  Tldr.findById({_id: req.params.tldr_id}, function (err, tldr) {
+    if (err) return res.status(401).json({error: '/tldr updateTldr error 1'})
+    tldr.summary = req.body.summary
+    tldr.save(function (err) {
+      if (err) return res.status(401).json({error: '/tldr updateTldr error 2'})
+      res.status(200).json({message: 'tldr updated! yay! ', tldr})
+    })
+  })
+}
+
+function deleteTldr (req, res) {
+  Tldr.findById({_id: req.params.tldr_id}, function (err, tldr) {
+    if (err) return res.status(401).json({error: '/tldr cant find tldr to delete'})
+    tldr.remove(function (err) {
+      if (err) return res.status(401).json({error: '/tldr cant delete tldr'})
+      res.status(200).json({message: 'tldr deleted! Yay!'})
+    })
+  })
+}
+
 module.exports = {
   createTldr: createTldr,
-  generateTldr: generateTldr
+  generateTldr: generateTldr,
+  getAllTldr: getAllTldr,
+  getTldrById: getTldrById,
+  updateTldr: updateTldr,
+  deleteTldr: deleteTldr
 }
