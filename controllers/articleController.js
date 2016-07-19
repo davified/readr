@@ -1,5 +1,6 @@
 const Article = require('../models/article').Article
 const Tldr = require('../models/article').Tldr
+const Topic = require('../models/topic')
 const summary = require('node-tldr')
 var Diffbot = require('diffbot').Diffbot
 var diffbot = new Diffbot('0b940b7bfec2c5da6ae73fc1225913dc') // Diffbot Token Here
@@ -24,10 +25,15 @@ function createArticle (req, res) {
     article.url = data.objects[0].pageUrl
     article.title = data.objects[0].title
     article.html = data.objects[0].html
-    // article.topics = data.objects[0].tags
-    // data.objects[0].tags.forEach(function (tag) {
-    //   article.topics.push(tag)
-    // })
+
+    data.objects[0].tags.forEach(function (tag) {
+      var label = tag.label.toLowerCase()
+      var topic = new Topic({topic: label})
+      topic.save((err, topic) => {
+        if (err) return res.status(401).json({error: '/topic createTopic error 1'})
+        article.topics.push(topic)
+      })
+    })
     if (data.media) console.log(JSON.stringify(data.media))
 
     // add tldr
@@ -37,7 +43,10 @@ function createArticle (req, res) {
 
       article.save((err, article) => {
         if (err) return res.status(401).json({error: '/article createArticle error 1'})
-        res.status(200).json({message: 'article created! yay! ', article})
+        Article.findOne(article).populate('topics').exec(function (err, article) {
+          if (err) return res.status(401).json({error: '/article createArticle error 1'})
+          res.status(200).json({message: 'article created! yay! ', article})
+        })
       })
     })
   })
