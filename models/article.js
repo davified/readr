@@ -14,15 +14,19 @@ const ArticleSchema = new mongoose.Schema({
   topics: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }],
   score: Number,
   liked: Number,
-  shared: Number
+  shared: Number,
+  created_at: Date,
+  updated_at: Date
 })
 
-// GENERATE TLDR SUMMARY BEFORE SAVE
-// ArticleSchema.pre('save', function (next) {
-//   const article = this
-//   next()
-//   // The node-tldr npm package should be called here, to automatically generate tldrs before user saves
-// })
+ArticleSchema.pre('save', function (next) {
+  let now = new Date()
+  this.updated_at = now
+  if (!this.created_at) {
+    this.created_at = now
+  }
+  next()
+})
 
 const Article = mongoose.model('Article', ArticleSchema)
 const Tldr = mongoose.model('Tldr', TldrSchema)
