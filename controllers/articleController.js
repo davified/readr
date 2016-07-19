@@ -6,9 +6,9 @@ var Diffbot = require('diffbot').Diffbot
 var diffbot = new Diffbot('0b940b7bfec2c5da6ae73fc1225913dc') // Diffbot Token Here
 
 function getAllArticles (req, res) {
-  Article.find({}, (err, articlesArray) => {
-    if (err) return res.status(401).json({error: '/ getAllArticles error'})
-    res.status(200).json(articlesArray)
+  Article.find({}).populate('topics').exec(function (err, article) {
+    if (err) return res.status(401).json({error: '/article createArticle error 1'})
+    res.status(200).json({message: 'article created! yay! ', article})
   })
 }
 
@@ -57,11 +57,9 @@ function createArticle (req, res) {
 function getArticle (req, res) {
   var id = req.params.id
 
-  Article.findById({_id: id}, (error, article) => {
-    console.log('article')
-    if (error) res.json({message: 'Could not find article b/c:' + error})
-
-    res.json({article: article})
+  Article.findById({_id: id}).populate('topics').exec(function (err, article) {
+    if (err) return res.status(401).json({error: '/article createArticle error 1'})
+    res.status(200).json({message: 'article created! yay! ', article})
   })
 }
 
