@@ -52,12 +52,12 @@ function updateTldr (req, res) {
   })
 }
 
-function deleteTldr (req, res) {
+function removeTldr (req, res) {
   Tldr.findById({_id: req.params.tldr_id}, function (err, tldr) {
-    if (err) return res.status(401).json({error: '/tldr cant find tldr to delete'})
+    if (err) return res.status(401).json({error: '/tldr cant find tldr to remove'})
     tldr.remove(function (err) {
-      if (err) return res.status(401).json({error: '/tldr cant delete tldr'})
-      res.status(200).json({message: 'tldr deleted! Yay!'})
+      if (err) return res.status(401).json({error: '/tldr cant remove tldr'})
+      res.status(200).json({message: 'tldr removed! Yay!'})
     })
   })
 }
@@ -68,5 +68,5 @@ module.exports = {
   getAllTldr: getAllTldr,
   getTldrById: getTldrById,
   updateTldr: updateTldr,
-  deleteTldr: deleteTldr
+  removeTldr: removeTldr
 }
