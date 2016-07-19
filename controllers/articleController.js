@@ -25,7 +25,9 @@ function createArticle (req, res) {
     article.url = data.objects[0].pageUrl
     article.title = data.objects[0].title
     article.html = data.objects[0].html
-
+    data.objects[0].images.forEach(function (img) {
+      article.images.push(img.url)
+    })
     data.objects[0].tags.forEach(function (tag) {
       var label = tag.label.toLowerCase()
       var topic = new Topic({topic: label})

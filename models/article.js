@@ -10,6 +10,7 @@ const ArticleSchema = new mongoose.Schema({
   url: String,
   title: String,
   html: String,
+  images: Array,
   tldr: [TldrSchema],
   topics: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }],
   score: Number,
