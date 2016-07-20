@@ -63,6 +63,18 @@ function getArticle (req, res) {
   })
 }
 
+function patchArticle (req, res) {
+  var id = req.params.id
+  Article.findById({_id: id}, function (err, article) {
+    if (err) return res.status(401).json({error: '/article updateArticle() error. cant find article to update'})
+    article.liked = req.body.liked
+    article.save(function (err) {
+      if (err) return res.status(401).json({error: '/article updateArticle() error. cant find article to update'})
+      res.status(200).json({message: 'article updated! yay! ', article})
+    })
+  })
+}
+
 function removeArticle (req, res) {
   var id = req.params.id
 
@@ -77,5 +89,6 @@ module.exports = {
   getAllArticles: getAllArticles,
   createArticle: createArticle,
   getArticle: getArticle,
+  patchArticle: patchArticle,
   removeArticle: removeArticle
 }
