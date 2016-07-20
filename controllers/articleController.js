@@ -68,13 +68,14 @@ function getArticle (req, res) {
 function updateArticle (req, res) {
   var id = req.params.id
   Article.findById({_id: id}, function (err, article) {
-    if (err) return res.status(401).json({error: '/article updateArticle() error. cant find article to update'})
-    article.topics.push(req.body.topics)
-    article.liked = req.body.liked
-    article.shared = req.body.shared
-    article.score = article.liked + article.shared
+    if (err) return res.status(401).json({error: '/article updateArticle() error1. cant find article to update'})
+    // article.topics.push(req.body.topics)
+    if (req.body.title) article.title = req.body.title
+    if (req.body.liked) article.liked = req.body.liked
+    if (req.body.shared) article.shared = req.body.shared
+    // article.score = article.liked + article.shared
     article.save(function (err) {
-      if (err) return res.status(401).json({error: '/article updateArticle() error. cant find article to update'})
+      if (err) return res.status(401).json({error: '/article updateArticle() error2. cant find article to update'})
       res.status(200).json({message: 'article updated! yay! ', article})
     })
   })
