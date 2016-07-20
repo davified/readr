@@ -69,7 +69,10 @@ function updateArticle (req, res) {
   var id = req.params.id
   Article.findById({_id: id}, function (err, article) {
     if (err) return res.status(401).json({error: '/article updateArticle() error. cant find article to update'})
+    article.topics.push(req.body.topics)
     article.liked = req.body.liked
+    article.shared = req.body.shared
+    article.score = article.liked + article.shared
     article.save(function (err) {
       if (err) return res.status(401).json({error: '/article updateArticle() error. cant find article to update'})
       res.status(200).json({message: 'article updated! yay! ', article})
