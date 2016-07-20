@@ -6,9 +6,9 @@ var Diffbot = require('diffbot').Diffbot
 var diffbot = new Diffbot('0b940b7bfec2c5da6ae73fc1225913dc') // Diffbot Token Here
 
 function getAllArticles (req, res) {
-  Article.find({}).populate('topics').exec(function (err, article) {
+  Article.find({}).populate('topics').exec(function (err, articles) {
     if (err) return res.status(401).json({error: '/article createArticle error 1'})
-    res.status(200).json({message: 'article created! yay! ', article})
+    res.status(200).json({articles})
   })
 }
 
@@ -39,7 +39,7 @@ function createArticle (req, res) {
     if (data.media) console.log(JSON.stringify(data.media))
 
     // add tldr
-    summary.summarize(article.url, function (result, failure) {
+    summary.summarize(article.url, {shortenFactor: 0.1, maxAnalyzedSentences: 2}, function (result, failure) {
       if (failure) console.log('An error occured!')
       article.tldr = new Tldr({summary: result.summary})
 
@@ -47,7 +47,7 @@ function createArticle (req, res) {
         if (err) return res.status(401).json({error: '/article createArticle error 1'})
         Article.findOne(article).populate('topics').exec(function (err, article) {
           if (err) return res.status(401).json({error: '/article createArticle error 1'})
-          res.status(200).json({message: 'article created! yay! ', article})
+          res.status(200).json({article})
         })
       })
     })
@@ -59,7 +59,7 @@ function getArticle (req, res) {
 
   Article.findById({_id: id}).populate('topics').exec(function (err, article) {
     if (err) return res.status(401).json({error: '/article createArticle error 1'})
-    res.status(200).json({message: 'article created! yay! ', article})
+    res.status(200).json({article})
   })
 }
 
