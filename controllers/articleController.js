@@ -65,7 +65,7 @@ function getArticle (req, res) {
   })
 }
 
-function patchArticle (req, res) {
+function updateArticle (req, res) {
   var id = req.params.id
   Article.findById({_id: id}, function (err, article) {
     if (err) return res.status(401).json({error: '/article updateArticle() error. cant find article to update'})
@@ -91,6 +91,6 @@ module.exports = {
   getAllArticles: getAllArticles,
   createArticle: createArticle,
   getArticle: getArticle,
-  patchArticle: patchArticle,
+  updateArticle: updateArticle,
   removeArticle: removeArticle
 }
