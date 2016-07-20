@@ -5,9 +5,30 @@ const summary = require('node-tldr')
 var Diffbot = require('diffbot').Diffbot
 var diffbot = new Diffbot('0b940b7bfec2c5da6ae73fc1225913dc') // Diffbot Token Here
 
-function getAllArticles (req, res) {
+function checkDuplicates (topic, article, next, callback) {
+  Topic.findOne({topic: topic}, function (err, t) {
+    if (err) return next(err)
+    console.log('Finding..')
+    if (!t) {
+      console.log('Topic not found, creating new topic')
+      var topic = new Topic({topic: topic})
+      topic.save((err, topic) => {
+        if (err) return next(err)
+        article.topics.push(topic)
+        if (typeof callback === 'function') callback(article)
+      })
+    }
+    if (t) {
+      console.log('Topic found')
+      article.topics.push(t)
+    }
+    if (typeof callback === 'function') callback(article)
+  })
+}
+
+function getAllArticles (req, res, next) {
   Article.find({}).populate('topics').exec(function (err, articles) {
-    if (err) return res.status(401).json({error: '/article createArticle error 1'})
+    if (err) return next(err)
     res.status(200).json({articles})
   })
 }
@@ -31,23 +52,7 @@ function createArticle (req, res, next) {
     if (data.objects[0].tags) {
       data.objects[0].tags.forEach(function (tag) {
         var label = tag.label.toLowerCase()
-        // Check for duplicates
-        Topic.findOne({topic: label}, function (err, t) {
-          if (err) return next(err)
-          console.log('Finding..')
-          if (!t) {
-            console.log('Topic not found, creating new topic')
-            var topic = new Topic({topic: label})
-            topic.save((err, topic) => {
-              if (err) return next(err)
-              article.topics.push(topic)
-            })
-          }
-          if (t) {
-            console.log('Topic found')
-            article.topics.push(t)
-          }
-        })
+        checkDuplicates(label, article, next)
       })
     }
     if (data.media) console.log(JSON.stringify(data.media))
@@ -81,15 +86,13 @@ function updateArticle (req, res, next) {
   var id = req.params.id
   Article.findById({_id: id}, function (err, article) {
     if (err) return next(err)
-    var topic = new Topic({topic: req.body.topics})
-    topic.save((err, topic) => {
-      if (err) return next(err)
-      article.topics.push(topic)
-      if (req.body.liked) article.liked = req.body.liked
-      if (req.body.shared) article.shared = req.body.shared
-      article.save(function (err) {
+    checkDuplicates(req.body.topics, article, next, function (newArticle) {
+      console.log('new', newArticle.topics.length)
+      if (req.body.liked) newArticle.liked = req.body.liked
+      if (req.body.shared) newArticle.shared = req.body.shared
+      newArticle.save(function (err) {
         if (err) return next(err)
-        Article.findOne(article).populate('topics').exec(function (err, article) {
+        Article.findOne(newArticle._id).populate('topics').exec(function (err, article) {
           if (err) return next(err)
           res.status(200).json({article})
         })
