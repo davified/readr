@@ -28,14 +28,16 @@ function createArticle (req, res) {
     data.objects[0].images.forEach(function (img) {
       article.images.push(img.url)
     })
-    data.objects[0].tags.forEach(function (tag) {
-      var label = tag.label.toLowerCase()
-      var topic = new Topic({topic: label})
-      topic.save((err, topic) => {
-        if (err) return res.status(401).json({error: '/topic createTopic error 1'})
-        article.topics.push(topic)
+    if (data.objects[0].tags) {
+      data.objects[0].tags.forEach(function (tag) {
+        var label = tag.label.toLowerCase()
+        var topic = new Topic({topic: label})
+        topic.save((err, topic) => {
+          if (err) return res.status(401).json({error: '/topic createTopic error 1'})
+          article.topics.push(topic)
+        })
       })
-    })
+    }
     if (data.media) console.log(JSON.stringify(data.media))
 
     // add tldr
