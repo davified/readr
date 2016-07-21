@@ -5,13 +5,13 @@ const summary = require('node-tldr')
 var Diffbot = require('diffbot').Diffbot
 var diffbot = new Diffbot('0b940b7bfec2c5da6ae73fc1225913dc') // Diffbot Token Here
 
-function checkDuplicates (topic, article, next, callback) {
-  Topic.findOne({topic: topic}, function (err, t) {
+function checkDuplicates (x, article, next, callback) {
+  Topic.findOne({topic: x}, function (err, t) {
     if (err) return next(err)
     console.log('Finding..')
     if (!t) {
       console.log('Topic not found, creating new topic')
-      var topic = new Topic({topic: topic})
+      var topic = new Topic({topic: x})
       topic.save((err, topic) => {
         if (err) return next(err)
         article.topics.push(topic)
