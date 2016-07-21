@@ -18,6 +18,7 @@ router.post('/signin', signInUpController.signIn)
 // USERS
 // Get all users
 router.get('/users', userController.getAllUsers)
+// router.get('/users/:id', userController.findUserById)
 
 // ARTICLES
 // Get all articles

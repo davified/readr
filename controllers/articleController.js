@@ -5,15 +5,36 @@ const summary = require('node-tldr')
 var Diffbot = require('diffbot').Diffbot
 var diffbot = new Diffbot('0b940b7bfec2c5da6ae73fc1225913dc') // Diffbot Token Here
 
-function getAllArticles (req, res) {
+function checkDuplicates (x, article, next, callback) {
+  Topic.findOne({topic: x}, function (err, t) {
+    if (err) return next(err)
+    console.log('Finding..')
+    if (!t) {
+      console.log('Topic not found, creating new topic')
+      var topic = new Topic({topic: x})
+      topic.save((err, topic) => {
+        if (err) return next(err)
+        article.topics.push(topic)
+        if (typeof callback === 'function') callback(article)
+      })
+    }
+    if (t) {
+      console.log('Topic found')
+      article.topics.push(t)
+    }
+    if (typeof callback === 'function') callback(article)
+  })
+}
+
+function getAllArticles (req, res, next) {
   Article.find({}).populate('topics').exec(function (err, articles) {
-    if (err) return res.status(401).json({error: '/article createArticle error 1'})
+    if (err) return next(err)
     res.status(200).json({articles})
   })
 }
 
 // need to figure out how to save embedded models (e.g. Tldr and Categories). Right now, it throws an error when tldr and categories are listed in articleman. But when I remove it, createArticle() works
-function createArticle (req, res) {
+function createArticle (req, res, next) {
   let article = new Article()
   article.score = 0
   article.liked = 0
@@ -31,24 +52,20 @@ function createArticle (req, res) {
     if (data.objects[0].tags) {
       data.objects[0].tags.forEach(function (tag) {
         var label = tag.label.toLowerCase()
-        var topic = new Topic({topic: label})
-        topic.save((err, topic) => {
-          if (err) return res.status(401).json({error: '/topic createTopic error 1'})
-          article.topics.push(topic)
-        })
+        checkDuplicates(label, article, next)
       })
     }
     if (data.media) console.log(JSON.stringify(data.media))
 
     // add tldr
-    summary.summarize(article.url, {shortenFactor: 0.1, maxAnalyzedSentences: 2}, function (result, failure) {
-      if (failure) console.log('An error occured!')
+    summary.summarize(article.url, {shortenFactor: 0.1, maxAnalyzedSentences: 2}, function (result, err) {
+      if (err) return next(err)
       article.tldr = new Tldr({summary: result.summary})
 
       article.save((err, article) => {
-        if (err) return res.status(401).json({error: '/article createArticle error 1'})
+        if (err) return next(err)
         Article.findOne(article).populate('topics').exec(function (err, article) {
-          if (err) return res.status(401).json({error: '/article createArticle error 1'})
+          if (err) return next(err)
           res.status(200).json({article})
         })
       })
@@ -56,29 +73,27 @@ function createArticle (req, res) {
   })
 }
 
-function getArticle (req, res) {
+function getArticle (req, res, next) {
   var id = req.params.id
 
   Article.findById({_id: id}).populate('topics').exec(function (err, article) {
-    if (err) return res.status(401).json({error: '/article createArticle error 1'})
+    if (err) return next(err)
     res.status(200).json({article})
   })
 }
 
-function updateArticle (req, res) {
+function updateArticle (req, res, next) {
   var id = req.params.id
   Article.findById({_id: id}, function (err, article) {
-    if (err) return res.status(401).json({error: '/article updateArticle() error1. cant find article to update'})
-    var topic = new Topic({topic: req.body.topics})
-    topic.save((err, topic) => {
-      if (err) return res.status(401).json({error: '/topic createTopic error 1'})
-      article.topics.push(topic)
-      if (req.body.liked) article.liked = req.body.liked
-      if (req.body.shared) article.shared = req.body.shared
-      article.save(function (err) {
-        if (err) return res.status(401).json({error: '/article updateArticle() error2. cant find article to update'})
-        Article.findOne(article).populate('topics').exec(function (err, article) {
-          if (err) return res.status(401).json({error: '/article updateArticle error 1'})
+    if (err) return next(err)
+    checkDuplicates(req.body.topics, article, next, function (newArticle) {
+      console.log('new', newArticle.topics.length)
+      if (req.body.liked) newArticle.liked = req.body.liked
+      if (req.body.shared) newArticle.shared = req.body.shared
+      newArticle.save(function (err) {
+        if (err) return next(err)
+        Article.findOne(newArticle._id).populate('topics').exec(function (err, article) {
+          if (err) return next(err)
           res.status(200).json({article})
         })
       })
@@ -86,11 +101,11 @@ function updateArticle (req, res) {
   })
 }
 
-function removeArticle (req, res) {
+function removeArticle (req, res, next) {
   var id = req.params.id
 
-  Article.remove({_id: id}, (error) => {
-    if (error) res.json({message: 'Could not delete article b/c:' + error})
+  Article.remove({_id: id}, (err) => {
+    if (err) return next(err)
 
     res.json({message: 'Article successfully deleted'})
   })
