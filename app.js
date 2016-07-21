@@ -24,6 +24,14 @@ mongoose.connect(process.env.MONGODB_URI)
 const router = require('./config/routes')
 app.use('/', router)
 
+app.use((err, req, res, next) => {
+  res.status(err.status || 500)
+  res.json({
+    message: err.message,
+    error: err
+  })
+})
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`)
 })
