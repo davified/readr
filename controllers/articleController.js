@@ -95,7 +95,7 @@ function updateArticle (req, res, next) {
     if (err) return next(err)
     checkDuplicates(req.body.topics, article, next, function (newArticle) {
       console.log('new', newArticle.topics.length)
-      if (req.body.tldr) newArticle.tldr.push(req.body.tldr)
+      if (req.body.tldr) newArticle.tldr.push(new Tldr({summary: req.body.tldr}))
       if (req.body.liked) newArticle.liked = req.body.liked
       if (req.body.shared) newArticle.shared = req.body.shared
       newArticle.save(function (err) {
