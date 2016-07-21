@@ -27,8 +27,8 @@ function checkDuplicates (x, article, next, callback) {
 }
 
 function getAllArticles (req, res, next) {
-  if (req.query.search){
-   Article.find({html: new RegExp(req.query.search, "i")}).populate('topics').exec(function (err, articles) {
+  if (req.query.search) {
+    Article.find({html: new RegExp(req.query.search, 'i')}).populate('topics').exec(function (err, articles) {
       if (err) return next(err)
       res.status(200).json({articles})
     })
