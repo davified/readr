@@ -27,10 +27,17 @@ function checkDuplicates (x, article, next, callback) {
 }
 
 function getAllArticles (req, res, next) {
-  Article.find({}).populate('topics').exec(function (err, articles) {
-    if (err) return next(err)
-    res.status(200).json({articles})
-  })
+  if (req.query.search){
+   Article.find({html: new RegExp(req.query.search, "i")}).populate('topics').exec(function (err, articles) {
+      if (err) return next(err)
+      res.status(200).json({articles})
+    })
+  } else {
+    Article.find({}).populate('topics').exec(function (err, articles) {
+      if (err) return next(err)
+      res.status(200).json({articles})
+    })
+  }
 }
 
 // need to figure out how to save embedded models (e.g. Tldr and Categories). Right now, it throws an error when tldr and categories are listed in articleman. But when I remove it, createArticle() works
