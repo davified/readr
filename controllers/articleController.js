@@ -6,6 +6,7 @@ var Diffbot = require('diffbot').Diffbot
 var diffbot = new Diffbot('0b940b7bfec2c5da6ae73fc1225913dc') // Diffbot Token Here
 
 function checkDuplicates (x, article, next, callback) {
+  if (!x) return callback(article)
   Topic.findOne({topic: x}, function (err, t) {
     if (err) return next(err)
     console.log('Finding..')
@@ -17,12 +18,11 @@ function checkDuplicates (x, article, next, callback) {
         article.topics.push(topic)
         if (typeof callback === 'function') callback(article)
       })
-    }
-    if (t) {
+    } else {
       console.log('Topic found')
       article.topics.push(t)
+      if (typeof callback === 'function') callback(article)
     }
-    if (typeof callback === 'function') callback(article)
   })
 }
 
@@ -88,6 +88,7 @@ function updateArticle (req, res, next) {
     if (err) return next(err)
     checkDuplicates(req.body.topics, article, next, function (newArticle) {
       console.log('new', newArticle.topics.length)
+      if (req.body.tldr) newArticle.tldr.push(req.body.tldr)
       if (req.body.liked) newArticle.liked = req.body.liked
       if (req.body.shared) newArticle.shared = req.body.shared
       newArticle.save(function (err) {
