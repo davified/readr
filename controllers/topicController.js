@@ -2,10 +2,17 @@ const Topic = require('../models/topic')
 const Article = require('../models/article').Article
 
 function getAllTopics (req, res) {
-  Topic.find({}, function (err, topicsArray) {
-    if (err) return res.status(401).json({error: '/topics getAllTopics() error'})
-    res.status(200).json(topicsArray)
-  })
+  if (req.query.search) {
+    Topic.find({topic: new RegExp(req.query.search, "i")}).exec(function (err, topics) {
+      if (err) return next(err)
+      res.status(200).json({topics})
+    })
+  } else {
+    Topic.find({}, function (err, topicsArray) {
+      if (err) return res.status(401).json({error: '/topics getAllTopics() error'})
+      res.status(200).json(topicsArray)
+    })
+  }
 }
 
 function createTopic (req, res) {
