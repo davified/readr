@@ -8,7 +8,17 @@ const topicController = require('../controllers/topicController')
 
 // 'HELLO WORLD' TEST FOR DEPLOYMENT ON HEROKU
 router.get('/', function (req, res) {
-  res.status(200).json({message: 'hello world!'})
+  res.status(200).json({user_signup_url: 'https://readr-app.herokuapp.com/sign_up/',
+                        user_signin_url: 'https://readr-app.herokuapp.com/sign_in/',
+                        show_all_users: 'https://readr-app.herokuapp.com/users',
+                        show_all_articles: 'https://readr-app.herokuapp.com/articles/',
+                        article_url: 'https://readr-app.herokuapp.com/articles/{id}',
+                        show_all_topics: 'https://readr-app.herokuapp.com/topics',
+                        topic_url: 'https://readr-app.herokuapp.com/topics/{id}',
+                        search_url: 'https://readr-app.herokuapp.com/search/{topics}',
+                        show_all_tldr: 'https://readr-app.herokuapp.com/articles/{id}/tldr',
+                        show_tldr: 'https://readr-app.herokuapp.com/articles/{id}/tldr/{id}'
+  })
 })
 
 // ROUTING END POINTS TO THE APPROPRIATE FUNCTIONS
