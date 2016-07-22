@@ -48,7 +48,8 @@ router.delete('/articles/:id', articleController.removeArticle)
 
 // TOPICS
 // Get all topics
-router.get('/topics', topicController.getAllTopics)
+// router.get('/topics', topicController.getAllTopics)
+router.get('/topics', topicController.getAllArticlesOfAllTopics)
 
 // Create new topic
 router.post('/topics', userController.userLoggedIn, topicController.createTopic)
