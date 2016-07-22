@@ -10,17 +10,23 @@ This repo contains server-side code for Readr, which is an app that aggregates, 
 * username: default
 * password: defaultpassword
 
+3) to run nodemon, run ``` npm run nodemon ```
+
 ## Stack
 This server-side app is built on Node, Express and MongoDB.
 
 ## Dependencies
-Potential npm packages include:
+Npm packages include:
+* diffbot
 * node-tldr
-* translate-google-free
-* pdfkit
+* node-sumuparticles
+* mongoose
+* dotenv
+* express
+* mongoose
 
 ## Companion API client
-[Readr | Aggregate, currate, serve](https://flight846.github.io/readr-client/)
+Readr | Aggregate, curate, serve (https://flight846.github.io/readr-client/)
 
 ## Team
 * Yazid Ismail (@flight846)
