@@ -3,7 +3,7 @@ const Article = require('../models/article').Article
 
 function getAllTopics (req, res) {
   if (req.query.search) {
-    Topic.find({topic: new RegExp(req.query.search, "i")}).exec(function (err, topics) {
+    Topic.find({topic: new RegExp(req.query.search, 'i')}).exec(function (err, topics) {
       if (err) return next(err)
       res.status(200).json({topics})
     })

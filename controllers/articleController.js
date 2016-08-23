@@ -3,7 +3,7 @@ const Tldr = require('../models/article').Tldr
 const Topic = require('../models/topic')
 const summary = require('node-tldr')
 var Diffbot = require('diffbot').Diffbot
-var diffbot = new Diffbot('0b940b7bfec2c5da6ae73fc1225913dc') // Diffbot Token Here
+var diffbot = new Diffbot('5f490e8f0bbb76d6edaed72a3a3b9898') // Diffbot Token Here
 
 function checkDuplicates (x, article, next, callback) {
   if (!x) return callback(article)
